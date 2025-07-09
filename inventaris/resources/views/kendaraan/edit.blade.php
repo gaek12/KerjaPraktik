@@ -57,7 +57,7 @@
         <div class="mb-3">
             <select name="status" class="form-control" required>
                 <option value="aktif" {{ $kendaraan->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                <option value="tidak_aktif" {{ $kendaraan->status == 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                <option value="perbaikan" {{ $kendaraan->status == 'perbaikan' ? 'selected' : '' }}>Perbaikan</option>
             </select>
         </div>
 

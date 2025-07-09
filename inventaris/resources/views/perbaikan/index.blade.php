@@ -1,10 +1,10 @@
 @extends('layout.main')
 
-@section('title','Data Perbaikan')
+@section('title','Riwayat Data Perbaikan')
 
 @section('content')
 <div class="container" id="perbaikan">
-    <h2 class="mb-4">Daftar Data Perbaikan</h2>
+    <h2 class="mb-4">Riwayat Data Perbaikan</h2>
 
     <!-- Search Form -->
     <div class="row mb-3">
@@ -38,12 +38,16 @@
             <thead class="table-dark">
                 <tr>
                     <th>No</th>
-                    <th>Kendaraan</th>
+                    <th>Nomor Polisi</th>
+                    <th>Merk</th>
+                    <th>Tipe</th>
                     <th>Bengkel</th>
                     <th>Kategori</th>
+                    <th>Detail</th>
                     <th>Jumlah</th>
                     <th>Harga</th>
-                    <th>Status</th>
+                    <th>Tgl Perbaikan</th>
+                    <th>Tgl Selesai</th>
                     <th>Foto</th>
                     <th>Aksi</th>
                 </tr>
@@ -51,22 +55,18 @@
             <tbody>
                 @forelse ($perbaikan as $item)
                     <tr>
-                        <td class="text-center align-middle px-3">{{ $loop->iteration }}</td>
-                        <td class="text-center align-middle px-3">{{ $item->kendaraan->nomor_polisi ?? '-' }}</td>
-                        <td class="text-center align-middle px-3">{{ $item->nama_bengkel }}</td>
-                        <td class="text-center align-middle px-3 text-capitalize">{{ $item->kategori }}</td>
-                        <td class="text-center align-middle px-3">{{ $item->jumlah }} pcs</td>
-                        <td class="text-center align-middle px-3">Rp{{ number_format($item->harga_per_pcs * $item->jumlah, 0, ',', '.') }}</td>
-                        <td class="text-center align-middle px-3">
-                            @if ($item->status == 'pending')
-                                <span class="badge bg-warning text-dark">Pending</span>
-                            @elseif ($item->status == 'proses')
-                                <span class="badge bg-primary">Proses</span>
-                            @else
-                                <span class="badge bg-success">Selesai</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->kendaraan->nomor_polisi ?? '-' }}</td>
+                        <td>{{ $item->kendaraan->merk ?? '-' }}</td>
+                        <td>{{ $item->kendaraan->tipe ?? '-' }}</td>
+                        <td>{{ $item->nama_bengkel }}</td>
+                        <td>{{ $item->kategori }}</td>
+                        <td>{{ $item->detail_perbaikan }}</td>
+                        <td>{{ $item->jumlah }} pcs</td>
+                        <td>Rp{{ number_format($item->harga_per_pcs * $item->jumlah, 0, ',', '.') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_perbaikan)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') }}</td>
+                        <td>
                             @if ($item->foto_kerusakan || $item->foto_nota)
                                 <div class="d-flex justify-content-center gap-2">
                                     @if ($item->foto_kerusakan)
@@ -84,22 +84,82 @@
                                 -
                             @endif
                         </td>
-                        <td class="text-text-center align-middle px-3">
-                            <a href="{{ route('perbaikan.edit', $item->id) }}#editperbaikan" class="btn btn-sm btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="{{ route('perbaikan.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin hapus data perbaikan ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-transparant" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v text-black"></i>
                                 </button>
-                            </form>
+                                <ul class="dropdown-menu p-2" style="min-width: 180px;">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('perbaikan.edit', $item->id) }}#editperbaikan">
+                                            <i class="fas fa-edit me-1"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('perbaikan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus data perbaikan ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="fas fa-trash-alt me-1"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <button class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#modalCetak{{ $item->id }}">
+                                            <i class="fas fa-print me-1"></i> Cetak
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
+
+                    <!-- MODAL CETAK -->
+                    <div class="modal fade" id="modalCetak{{ $item->id }}" tabindex="-1" aria-labelledby="modalCetakLabel{{ $item->id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <form action="{{ route('perbaikan.cetak') }}" method="GET" target="_blank">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalCetakLabel{{ $item->id }}">Cetak Laporan Bulanan</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-9 mb-3">
+                                    <label class="form-label">Bulan</label>
+                                    <select name="bulan" class="form-select" required>
+                                        <option value="">Pilih Bulan</option>
+                                        @for ($i = 1; $i <= 12; $i++)
+                                        <option value="{{ $i }}">{{ DateTime::createFromFormat('!m', $i)->format('F') }}</option>
+                                        @endfor
+                                    </select>
+                                    </div>
+                                    <div class="col-md-9 mb-3">
+                                    <label class="form-label">Tahun</label>
+                                    <select name="tahun" class="form-select" required>
+                                        <option value="">Pilih Tahun</option>
+                                        @for ($y = date('Y'); $y >= 2020; $y--)
+                                        <option value="{{ $y }}">{{ $y }}</option>
+                                        @endfor
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-success">
+                                  <i class="fas fa-print me-1"></i> Cetak
+                              </button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
                 @empty
                     <tr>
-                        <td colspan="9" class="text-center">Belum ada data perbaikan.</td>
+                        <td colspan="13" class="text-center">Belum ada data perbaikan.</td>
                     </tr>
                 @endforelse
             </tbody>

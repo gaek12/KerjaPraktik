@@ -47,15 +47,6 @@
             <input type="text" name="merk" class="form-control" value="{{ old('merk') }}" required>
         </div>
 
-        <!-- Status -->
-        <label for="status" class="form-label">Status</label>
-        <div class="mb-3">
-            <select name="status" class="form-control" required>
-                <option value="aktif" selected>Aktif</option>
-                <option value="servis">Servis</option>
-                <option value="tidak_aktif">Tidak Aktif</option>
-            </select>
-        </div>
         <!-- Tombol -->
         <div class="row mt-4">
             <div class="col-12 d-flex justify-content-end">

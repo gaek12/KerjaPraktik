@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nomor_polisi');
             $table->string('tipe');
             $table->string('merk');
-            $table->enum('status', ['aktif', 'servis', 'tidak_aktif'])->default('aktif');
+            $table->enum('status', ['aktif','Perbaikan'])->default('aktif');
             $table->timestamps();
         });
     }

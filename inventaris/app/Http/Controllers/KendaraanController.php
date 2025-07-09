@@ -92,7 +92,7 @@ class KendaraanController extends Controller
             'nomor_polisi' => 'required|max:255',
             'tipe' => 'required|max:255',
             'merk' => 'required|max:255',
-            'status' => 'required|in:aktif,servis,tidak_aktif',
+            'status' => 'required|in:aktif,perbaikan',
         ]);
 
         // Cek jika ada file foto baru

@@ -24,7 +24,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/perbaikan/cetak', [PerbaikanController::class, 'cetak'])->name('perbaikan.cetak');
     Route::resource('perbaikan', PerbaikanController::class);
 });
+
+
 
 require __DIR__.'/auth.php';

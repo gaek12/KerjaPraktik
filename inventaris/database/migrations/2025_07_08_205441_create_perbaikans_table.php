@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('kendaraan_id')->constrained('kendaraans')->onDelete('cascade');
             $table->string('nama_bengkel');
-            $table->string('kategori'); // ringan / berat
+            $table->string('kategori');
             $table->text('detail_perbaikan');
             $table->integer('jumlah')->default(1);
             $table->bigInteger('harga_per_pcs');
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('foto_nota')->nullable();
             $table->date('tanggal_perbaikan')->nullable();
             $table->date('tanggal_selesai')->nullable();
-            $table->enum('status', ['pending', 'proses', 'selesai'])->default('pending');
             $table->timestamps();
         });
     }

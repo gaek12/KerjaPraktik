@@ -59,10 +59,8 @@
                         <td class="text-center align-middle px-3">
                             @if ($item->status == 'aktif')
                                 <span class="text-success">Aktif</span>
-                            @elseif ($item->status == 'servis')
-                                <span class="text-dark">Servis</span>
-                            @else
-                                <span class="text-secondary">Tidak Aktif</span>
+                            @elseif ($item->status == 'Perbaikan')
+                                <span class="text-danger">Perbaikan</span>
                             @endif
                         </td>
                         <td class="text-text-center align-middle px-3">

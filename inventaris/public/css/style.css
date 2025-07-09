@@ -1305,3 +1305,54 @@ select.form-control {
 td.text-start {
     text-align: left !important;
 }
+
+/* label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+} */
+
+/* label.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+} */
+
+form label.form-label {
+    display: block !important;
+    width: auto !important;
+    text-align: left !important;
+    padding-right: 0 !important;
+}
+
+input.form-control,
+select.form-select {
+    padding: 8px 12px;
+    font-size: 14px;
+    height: 38px;
+}
+
+form .mb-3 {
+    margin-bottom: 1.25rem; /* spacing antar input lebih longgar */
+}
+
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+select.form-select {
+    width: 100%;
+    display: block;
+}
+
+label.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}

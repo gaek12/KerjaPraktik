@@ -50,7 +50,7 @@
                             <li class="nav-item"><a class="nav-link" href="{{ route('kendaraan.index') }}#kendaraan">Data Kendaraan</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('kendaraan.create') }}#tambahkendaraan">Tambah Kendaraan</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('perbaikan.index') }}#perbaikan"">Riwayat Perbaikan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Tambah Perbaikan</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('perbaikan.create') }}#tambahperbaikan">Tambah Perbaikan</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                             <li class="nav-item">
                                 <form method="POST" action="{{ route('logout') }}">
@@ -118,6 +118,7 @@
         <script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ url('js/jquery-3.0.0.min.js') }}"></script>
         <script src="{{ url('js/plugin.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <!-- sidebar -->
         <script src="{{ url('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
         <script src="{{ url('js/custom.js') }}"></script>
