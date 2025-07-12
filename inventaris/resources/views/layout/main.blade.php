@@ -46,12 +46,15 @@
                 <nav class="navbar navbar-expand-lg navbar-dark bg-transparant">
                     <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/dashboard') }}#index">Dashboard</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('kendaraan.index') }}#kendaraan">Data Kendaraan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('kendaraan.create') }}#tambahkendaraan">Tambah Kendaraan</a></li>
+                            @if(auth()->user()->role === 'admin')
+                                <li class="nav-item"><a class="nav-link" href="{{ route('kendaraan.create') }}#tambahkendaraan">Tambah Kendaraan</a></li>
+                            @endif
                             <li class="nav-item"><a class="nav-link" href="{{ route('perbaikan.index') }}#perbaikan"">Riwayat Perbaikan</a></li>
+                            @if(auth()->user()->role === 'admin')
                             <li class="nav-item"><a class="nav-link" href="{{ route('perbaikan.create') }}#tambahperbaikan">Tambah Perbaikan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+                            @endif
                             <li class="nav-item">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf

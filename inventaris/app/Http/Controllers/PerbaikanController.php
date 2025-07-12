@@ -170,5 +170,4 @@ class PerbaikanController extends Controller
 
         return view('perbaikan.cetak', compact('perbaikan'));
     }
-
 }

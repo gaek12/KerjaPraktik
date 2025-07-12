@@ -43,7 +43,9 @@
                     <th>Merk</th>
                     <th>Tipe</th>
                     <th>Status</th>
-                    <th>Aksi</th>
+                    @if(auth()->user()->role === 'admin')
+                        <th>Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -63,19 +65,21 @@
                                 <span class="text-danger">Perbaikan</span>
                             @endif
                         </td>
-                        <td class="text-text-center align-middle px-3">
-                            <a href="{{ route('kendaraan.edit', $item->id) }}#editkendaraan" class="btn btn-sm btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                        @if(auth()->user()->role === 'admin')
+                            <td class="text-text-center align-middle px-3">
+                                <a href="{{ route('kendaraan.edit', $item->id) }}#editkendaraan" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
 
-                            <form action="{{ route('kendaraan.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin hapus kendaraan ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </td>
+                                <form action="{{ route('kendaraan.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin hapus kendaraan ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <tr>

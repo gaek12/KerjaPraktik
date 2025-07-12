@@ -90,7 +90,6 @@
             <button type="submit" class="btn btn-success">Simpan</button>
             <a href="{{ route('perbaikan.index') }}#perbaikan" class="btn btn-secondary">Batal</a>
         </div>
-
     </form>
 </div>
 @endsection

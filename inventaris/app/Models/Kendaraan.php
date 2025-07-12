@@ -26,4 +26,9 @@ class Kendaraan extends Model
             }
         });
     }
+
+    public function perbaikans()
+    {
+        return $this->hasMany(Perbaikan::class);
+    }   
 }
