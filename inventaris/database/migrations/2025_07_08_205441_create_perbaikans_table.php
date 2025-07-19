@@ -14,17 +14,22 @@ return new class extends Migration
         Schema::create('perbaikans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('kendaraan_id')->constrained('kendaraans')->onDelete('cascade');
+            $table->date('tanggal_perbaikan');
             $table->string('nama_bengkel');
             $table->string('kategori');
-            $table->text('detail_perbaikan');
+            $table->string('sub_kategori');
+            $table->text('detail_kerusakan');
+            $table->string('komponen')->nullable();
             $table->integer('jumlah')->default(1);
-            $table->bigInteger('harga_per_pcs');
+            $table->string('satuan')->default('pcs');
+            $table->integer('harga_per_pcs')->default(0);
+            $table->integer('total_harga')->default(0);
             $table->string('foto_kerusakan')->nullable();
             $table->string('foto_nota')->nullable();
-            $table->date('tanggal_perbaikan')->nullable();
             $table->date('tanggal_selesai')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

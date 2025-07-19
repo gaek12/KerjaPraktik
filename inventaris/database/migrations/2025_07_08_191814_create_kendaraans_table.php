@@ -15,6 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('foto');
             $table->string('nomor_polisi');
+            $table->string('nomor_mesin');
+            $table->string('nomor_stnk');
             $table->string('tipe');
             $table->string('merk');
             $table->enum('status', ['aktif','Perbaikan'])->default('aktif');

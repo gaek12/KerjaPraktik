@@ -43,6 +43,7 @@
                     <th>Tipe</th>
                     <th>Bengkel</th>
                     <th>Kategori</th>
+                    <th>Sub Kategori</th>
                     <th>Detail</th>
                     <th>Jumlah</th>
                     <th>Harga</th>
@@ -61,11 +62,12 @@
                         <td>{{ $item->kendaraan->tipe ?? '-' }}</td>
                         <td>{{ $item->nama_bengkel }}</td>
                         <td>{{ $item->kategori }}</td>
-                        <td>{{ $item->detail_perbaikan }}</td>
-                        <td>{{ $item->jumlah }} pcs</td>
-                        <td>Rp{{ number_format($item->harga_per_pcs * $item->jumlah, 0, ',', '.') }}</td>
+                        <td>{{ $item->sub_kategori }}</td>
+                        <td>{{ $item->detail_kerusakan }}</td>
+                        <td>{{ $item->jumlah }} {{ $item->satuan }}</td>
+                        <td>Rp{{ number_format($item->total_harga, 0, ',', '.') }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->tanggal_perbaikan)->format('d-m-Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') }}</td>
+                        <td>{{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') : '-' }}</td>
                         <td>
                             @if ($item->foto_kerusakan || $item->foto_nota)
                                 <div class="d-flex justify-content-center gap-2">
@@ -119,7 +121,6 @@
                         </td>
                     </tr>
 
-                    <!-- MODAL CETAK -->
                     @if(auth()->user()->role === 'user')
                         <div class="modal fade" id="modalCetak{{ $item->id }}" tabindex="-1" aria-labelledby="modalCetakLabel{{ $item->id }}" aria-hidden="true">
                         <div class="modal-dialog">
@@ -164,7 +165,7 @@
                     @endif
                 @empty
                     <tr>
-                        <td colspan="13" class="text-center">Belum ada data perbaikan.</td>
+                        <td colspan="14" class="text-center">Belum ada data perbaikan.</td>
                     </tr>
                 @endforelse
             </tbody>

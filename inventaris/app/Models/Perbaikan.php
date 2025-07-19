@@ -16,16 +16,19 @@ class Perbaikan extends Model
 
     protected $fillable = [
         'kendaraan_id',
+        'tanggal_perbaikan',
         'nama_bengkel',
         'kategori',
-        'detail_perbaikan',
+        'sub_kategori',
+        'detail_kerusakan',
+        'komponen',
         'jumlah',
+        'satuan',
         'harga_per_pcs',
+        'total_harga',
         'foto_kerusakan',
         'foto_nota',
-        'tanggal_perbaikan',
         'tanggal_selesai',
-        'status',
     ];
 
     // UUID Generator saat create
