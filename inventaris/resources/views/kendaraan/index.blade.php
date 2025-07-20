@@ -40,6 +40,8 @@
                     <th>No</th>
                     <th>Foto</th>
                     <th>Nomor Polisi</th>
+                    <th>Nomor Mesin</th>
+                    <th>Nomor Stnk</th>
                     <th>Merk</th>
                     <th>Tipe</th>
                     <th>Status</th>
@@ -56,6 +58,8 @@
                             <img src="{{ asset('uploads/kendaraan/'.$item->foto) }}" width="100" height="70" style="object-fit: cover; border-radius: 5px;">
                         </td>
                         <td class="text-center align-middle px-3">{{ $item->nomor_polisi }}</td>
+                        <td class="text-center align-middle px-3">{{ $item->nomor_mesin }}</td>
+                        <td class="text-center align-middle px-3">{{ $item->nomor_stnk }}</td>
                         <td class="text-center align-middle px-3">{{ $item->merk }}</td>
                         <td class="text-center align-middle px-3">{{ $item->tipe }}</td>
                         <td class="text-center align-middle px-3">

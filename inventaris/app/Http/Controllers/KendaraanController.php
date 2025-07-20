@@ -20,6 +20,8 @@ class KendaraanController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('nomor_polisi', 'like', "%$search%")
+                ->orWhere('nomor_mesin', 'like', "%$search%")
+                ->orWhere('nomor_stnk', 'like', "%$search%")
                 ->orWhere('merk', 'like', "%$search%")
                 ->orWhere('tipe', 'like', "%$search%");
             });
@@ -46,6 +48,8 @@ class KendaraanController extends Controller
         $val = $request->validate([
             'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'nomor_polisi' => 'required|max:255',
+            'nomor_mesin' => 'required|max:255',
+            'nomor_stnk' => 'required|max:255',
             'tipe' => 'required|max:255',
             'merk' => 'required|max:255',
         ]);
@@ -58,6 +62,8 @@ class KendaraanController extends Controller
         Kendaraan::create([
             'foto' => $fotoName,
             'nomor_polisi' => $request->nomor_polisi,
+            'nomor_mesin' => $request->nomor_mesin,
+            'nomor_stnk' => $request->nomor_stnk,
             'tipe' => $request->tipe,
             'merk' => $request->merk,
             'status' => 'aktif',
@@ -90,6 +96,8 @@ class KendaraanController extends Controller
         $request->validate([
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'nomor_polisi' => 'required|max:255',
+            'nomor_mesin' => 'required|max:255',
+            'nomor_stnk' => 'required|max:255',
             'tipe' => 'required|max:255',
             'merk' => 'required|max:255',
             'status' => 'required|in:aktif,perbaikan',
@@ -113,6 +121,8 @@ class KendaraanController extends Controller
 
         // Update data lainnya
         $kendaraan->nomor_polisi = $request->nomor_polisi;
+        $kendaraan->nomor_mesin = $request->nomor_mesin;
+        $kendaraan->nomor_stnk = $request->nomor_stnk;
         $kendaraan->tipe = $request->tipe;
         $kendaraan->merk = $request->merk;
         $kendaraan->status = $request->status;

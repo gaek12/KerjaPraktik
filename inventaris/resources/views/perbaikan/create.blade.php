@@ -39,19 +39,22 @@
             </div>
         </div>
 
-        {{-- Kategori dan Subkategori --}}
+        {{-- Kategori --}}
         <div class="mb-3">
             <label for="kategori" class="form-label">Kategori</label>
             <select name="kategori" id="kategori" class="form-select" required>
                 <option value="">-- Pilih Kategori --</option>
                 @foreach (array_keys(config('subkategori.mapping')) as $kat)
-                    <option value="{{ $kat }}" {{ old('kategori') == $kat ? 'selected' : '' }}>{{ $kat }}</option>
+                    <option value="{{ $kat }}" {{ old('kategori') == $kat ? 'selected' : '' }}>
+                        {{ $kat }}
+                    </option>
                 @endforeach
             </select>
         </div>
 
+        {{-- Sub Kategori --}}
         <div class="mb-3">
-            <label for="sub_kategori" class="form-label">Sub Kategori (Inisial)</label>
+            <label for="sub_kategori" class="form-label">Sub Kategori</label>
             <select name="sub_kategori" id="sub_kategori" class="form-select" required>
                 <option value="">-- Pilih Sub Kategori --</option>
             </select>
@@ -111,60 +114,69 @@
         </div>
     </form>
 </div>
-
-@php
-    $subKategoriMap = config('subkategori.mapping');
-@endphp
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const subKategoriMap = @json($subKategoriMap);
-        const kategoriSelect = document.getElementById('kategori');
-        const subKategoriSelect = document.getElementById('sub_kategori');
-
-        const oldKategori = @json(old('kategori'));
-        const oldSubKategori = @json(old('sub_kategori'));
-
-        const normalize = str => str?.trim().replace(/\s+/g, ' ').toLowerCase();
-
-        function updateSubKategoriOptions(selectedKategori, selectedSub = null) {
-            const normalized = normalize(selectedKategori);
-            const keyMatch = Object.keys(subKategoriMap).find(k => normalize(k) === normalized);
-            subKategoriSelect.innerHTML = '<option value="">-- Pilih Sub Kategori --</option>';
-
-            if (!keyMatch) {
-                console.warn("⚠️ Kategori tidak ditemukan dalam mapping:", selectedKategori);
-                return;
-            }
-
-            subKategoriMap[keyMatch].forEach(item => {
-                const option = document.createElement('option');
-                option.value = item;
-                option.textContent = item;
-                if (item === selectedSub) {
-                    option.selected = true;
-                }
-                subKategoriSelect.appendChild(option);
-            });
-
-            console.log(`✅ Subkategori untuk [${keyMatch}] diupdate. Total: ${subKategoriMap[keyMatch].length}`);
-        }
-
-        kategoriSelect.addEventListener('change', function () {
-            updateSubKategoriOptions(this.value);
-        });
-
-        // 🚀 Force pilih default kategori jika ada old value
-        if (oldKategori) {
-            // Set value secara paksa
-            kategoriSelect.value = oldKategori;
-            console.log("📌 Inisialisasi kategori dari old():", kategoriSelect.value);
-            updateSubKategoriOptions(kategoriSelect.value, oldSubKategori);
-        } else {
-            console.warn("⛔ Tidak ada kategori aktif saat initial load.");
-        }
-    });
-</script>
-
-
 @endsection
+
+@push('scripts')
+    {{-- AJAX Script --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("🧠 Script dimuat");
+    const kategoriSelect = document.getElementById('kategori');
+    const subKategoriSelect = document.getElementById('sub_kategori');
+
+    const oldKategori = @json(old('kategori'));
+    const oldSubKategori = @json(old('sub_kategori'));
+
+    function updateSubKategoriOptions(kategori, selectedSub = null) {
+        console.log('[DEBUG] Memuat subkategori untuk:', kategori);
+        subKategoriSelect.innerHTML = '<option value="">-- Pilih Sub Kategori --</option>';
+
+        if (!kategori) {
+            console.warn('[DEBUG] kategori kosong, tidak fetch');
+            return;
+        }
+
+        const url = `{{ url('/api/subkategori') }}/${encodeURIComponent(kategori)}`;
+        console.log('[DEBUG] Fetch ke:', url);
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                console.log('[DEBUG] Subkategori diterima:', data);
+                if (!Array.isArray(data)) {
+                    console.warn('[DEBUG] Subkategori bukan array!');
+                    return;
+                }
+
+                data.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item;
+                    if (item.trim() === (selectedSub ?? '').trim()) {
+                        opt.selected = true;
+                    }
+                    subKategoriSelect.appendChild(opt);
+                });
+            })
+            .catch(error => {
+                console.error('[ERROR] Gagal ambil subkategori:', error);
+            });
+    }
+
+    kategoriSelect.addEventListener('change', function () {
+        console.log('[DEBUG] Kategori diubah:', this.value);
+        updateSubKategoriOptions(this.value);
+    });
+
+    if (oldKategori) {
+        console.log('[DEBUG] Auto-load kategori lama:', oldKategori);
+        kategoriSelect.value = oldKategori;
+        updateSubKategoriOptions(oldKategori, oldSubKategori);
+    }
+});
+</script>
+@endpush

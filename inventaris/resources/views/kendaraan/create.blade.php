@@ -32,7 +32,17 @@
         <!-- Nomor Polisi -->
         <div class="mb-3">
             <label for="nomor_polisi" class="form-label">Nomor Polisi</label>
-            <input type="text" name="nomor_polisi" class="form-control" value="{{ old('nomor_polisi') }}" required>
+            <input type="text" name="nomor_polisi" id="nomor_mesin" class="form-control" value="{{ old('nomor_polisi') }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nomor_mesin" class="form-label">Nomor Mesin</label>
+            <input type="text" name="nomor_mesin" id="nomor_mesin" class="form-control" value="{{ old('nomor_mesin') }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nomor_stnk" class="form-label">Nomor Stnk</label>
+            <input type="text" name="nomor_stnk" id="nomor_stnk" class="form-control" value="{{ old('nomor_polisi') }}" required>
         </div>
 
         <!-- Tipe -->

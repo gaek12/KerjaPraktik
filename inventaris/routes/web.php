@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PerbaikanController;
@@ -29,6 +30,17 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 //     Route::get('/perbaikan/cetak', [PerbaikanController::class, 'cetak'])->name('perbaikan.cetak');
 //     Route::resource('perbaikan', PerbaikanController::class);
 // });
+// 👇 LETAKKAN INI DI ATAS sebelum grup middleware mana pun
+// Letakkan ini sebelum group middleware
+
+Route::get('/api/subkategori/{kategori}', function ($kategori) {
+    $map = config('subkategori.mapping');
+    $kategori = Str::lower(trim($kategori));
+    $mapping = collect($map)->keyBy(fn($v, $k) => Str::lower(trim($k)));
+    return response()->json($mapping->get($kategori, []));
+});
+
+
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
@@ -60,5 +72,6 @@ Route::middleware(['auth', 'role:admin,user'])->group(function () {
     // Index Perbaikan
     Route::get('/perbaikan', [PerbaikanController::class, 'index'])->name('perbaikan.index');
 });
+
 
 require __DIR__.'/auth.php';

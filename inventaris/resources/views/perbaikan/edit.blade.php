@@ -43,18 +43,49 @@
         {{-- Kategori --}}
         <div class="mb-3">
             <label for="kategori" class="form-label">Kategori</label>
-            <input type="text" name="kategori" id="kategori" class="form-control" value="{{ old('kategori', $perbaikan->kategori) }}" required>
+            <select name="kategori" id="kategori" class="form-select" required>
+                <option value="">-- Pilih Kategori --</option>
+                @foreach (array_keys(config('subkategori.mapping')) as $kat)
+                    <option value="{{ $kat }}" {{ (old('kategori', $perbaikan->kategori) == $kat) ? 'selected' : '' }}>{{ $kat }}</option>
+                @endforeach
+            </select>
         </div>
 
+        {{-- Sub Kategori --}}
+        <div class="mb-3">
+            <label for="sub_kategori" class="form-label">Sub Kategori</label>
+            <select name="sub_kategori" id="sub_kategori" class="form-select" required>
+                <option value="">-- Pilih Sub Kategori --</option>
+                @foreach ($subKategoriList as $sub)
+                    <option value="{{ $sub }}" {{ old('sub_kategori', $perbaikan->sub_kategori) == $sub ? 'selected' : '' }}>
+                        {{ $sub }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Detail --}}
         <div class="mb-3">
             <label for="detail_perbaikan" class="form-label">Detail Perbaikan</label>
             <input type="text" name="detail_perbaikan" id="detail_perbaikan" class="form-control" value="{{ old('detail_perbaikan', $perbaikan->detail_perbaikan) }}" required>
         </div>
 
+        {{-- Komponen --}}
+        <div class="mb-3">
+            <label for="komponen" class="form-label">Komponen (Opsional)</label>
+            <input type="text" name="komponen" id="komponen" class="form-control" value="{{ old('komponen', $perbaikan->komponen) }}">
+        </div>
+
         {{-- Jumlah --}}
         <div class="mb-3">
-            <label for="jumlah" class="form-label">Jumlah (pcs)</label>
+            <label for="jumlah" class="form-label">Jumlah</label>
             <input type="number" name="jumlah" id="jumlah" class="form-control" min="1" value="{{ old('jumlah', $perbaikan->jumlah) }}" required>
+        </div>
+
+        {{-- Satuan --}}
+        <div class="mb-3">
+            <label for="satuan" class="form-label">Satuan</label>
+            <input type="text" name="satuan" id="satuan" class="form-control" value="{{ old('satuan', $perbaikan->satuan) }}" required>
         </div>
 
         {{-- Harga --}}
@@ -69,7 +100,7 @@
             @if ($perbaikan->foto_kerusakan)
                 <div class="mb-2">
                     <a href="{{ asset('storage/'.$perbaikan->foto_kerusakan) }}" target="_blank">
-                        <img src="{{ asset('storage/'.$perbaikan->foto_kerusakan) }}" width="80" style="border-radius: 5px; object-fit: cover;">
+                        <img src="{{ asset('storage/'.$perbaikan->foto_kerusakan) }}" width="80">
                     </a>
                 </div>
             @endif
@@ -82,7 +113,7 @@
             @if ($perbaikan->foto_nota)
                 <div class="mb-2">
                     <a href="{{ asset('storage/'.$perbaikan->foto_nota) }}" target="_blank">
-                        <img src="{{ asset('storage/'.$perbaikan->foto_nota) }}" width="80" style="border-radius: 5px; object-fit: cover;">
+                        <img src="{{ asset('storage/'.$perbaikan->foto_nota) }}" width="80">
                     </a>
                 </div>
             @endif
@@ -107,3 +138,34 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const kategoriSelect = document.getElementById('kategori');
+    const subKategoriSelect = document.getElementById('sub_kategori');
+
+    function updateSubKategoriOptions(kategori) {
+        subKategoriSelect.innerHTML = '<option value="">-- Pilih Sub Kategori --</option>';
+        if (!kategori) return;
+
+        const url = `/api/subkategori/${encodeURIComponent(kategori)}`;
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                data.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item;
+                    subKategoriSelect.appendChild(opt);
+                });
+            })
+            .catch(err => console.error('Gagal ambil subkategori:', err));
+    }
+
+    kategoriSelect.addEventListener('change', function () {
+        updateSubKategoriOptions(this.value);
+    });
+});
+</script>
+@endpush

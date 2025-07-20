@@ -115,12 +115,12 @@
                 </div>
             </div>
         </div>
+        
         <!-- content section end -->
         <!-- Javascript files-->
         <script src="{{ url('js/jquery.min.js') }}"></script>
         <script src="{{ url('js/popper.min.js') }}"></script>
         <script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url('js/jquery-3.0.0.min.js') }}"></script>
         <script src="{{ url('js/plugin.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <!-- sidebar -->

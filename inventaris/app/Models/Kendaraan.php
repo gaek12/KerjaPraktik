@@ -13,7 +13,7 @@ class Kendaraan extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'foto','nomor_polisi', 'tipe', 'merk', 'status',
+        'foto','nomor_polisi','nomor_mesin','nomor_stnk','tipe', 'merk', 'status',
     ];
 
     protected static function boot()

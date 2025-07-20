@@ -30,10 +30,17 @@ class PerbaikanController extends Controller
         return view('perbaikan.index', compact('perbaikan'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $kendaraan = Kendaraan::all();
-        return view('perbaikan.create', compact('kendaraan'));
+        $kategoriTerpilih = $request->get('kategori') ?? old('kategori');
+        $subKategoriList = [];
+
+        if ($kategoriTerpilih && isset(config('subkategori.mapping')[$kategoriTerpilih])) {
+            $subKategoriList = config('subkategori.mapping')[$kategoriTerpilih];
+        }
+
+        return view('perbaikan.create', compact('kendaraan', 'kategoriTerpilih', 'subKategoriList'));
     }
 
     public function store(Request $request)
@@ -78,7 +85,14 @@ class PerbaikanController extends Controller
     public function edit(Perbaikan $perbaikan)
     {
         $kendaraan = Kendaraan::all();
-        return view('perbaikan.edit', compact('perbaikan', 'kendaraan'));
+        $kategoriTerpilih = $perbaikan->kategori;
+        $subKategoriList = [];
+
+        if ($kategoriTerpilih && isset(config('subkategori.mapping')[$kategoriTerpilih])) {
+            $subKategoriList = config('subkategori.mapping')[$kategoriTerpilih];
+        }
+
+        return view('perbaikan.edit', compact('perbaikan', 'kendaraan', 'kategoriTerpilih', 'subKategoriList'));
     }
 
     public function update(Request $request, Perbaikan $perbaikan)
