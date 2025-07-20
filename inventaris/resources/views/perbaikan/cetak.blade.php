@@ -4,22 +4,33 @@
     <meta charset="UTF-8">
     <title>Laporan Data Perbaikan</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 12px;
         }
         th, td {
             border: 1px solid #333;
             padding: 6px;
-            font-size: 12px;
+            text-align: left;
+            vertical-align: top;
         }
         th {
             background-color: #f2f2f2;
         }
-        h2 {
+        tfoot td {
+            font-style: italic;
             text-align: center;
+            padding-top: 10px;
         }
-
         @media print {
             body {
                 margin: 0;
@@ -29,6 +40,7 @@
 </head>
 <body>
     <h2>Laporan Data Perbaikan</h2>
+
     <table>
         <thead>
             <tr>
@@ -38,9 +50,12 @@
                 <th>Tipe</th>
                 <th>Bengkel</th>
                 <th>Kategori</th>
+                <th>Sub Kategori</th>
+                <th>Komponen</th>
                 <th>Detail</th>
                 <th>Jumlah</th>
-                <th>Harga</th>
+                <th>Harga/pcs</th>
+                <th>Total</th>
                 <th>Tgl Perbaikan</th>
                 <th>Tgl Selesai</th>
             </tr>
@@ -54,18 +69,28 @@
                 <td>{{ $item->kendaraan->tipe ?? '-' }}</td>
                 <td>{{ $item->nama_bengkel }}</td>
                 <td>{{ $item->kategori }}</td>
-                <td>{{ $item->detail_perbaikan }}</td>
-                <td>{{ $item->jumlah }} pcs</td>
+                <td>{{ $item->sub_kategori ?? '-' }}</td>
+                <td>{{ $item->komponen ?? '-' }}</td>
+                <td>{{ $item->detail_kerusakan }}</td>
+                <td>{{ $item->jumlah }} {{ $item->satuan ?? 'pcs' }}</td>
+                <td>Rp{{ number_format($item->harga_per_pcs, 0, ',', '.') }}</td>
                 <td>Rp{{ number_format($item->harga_per_pcs * $item->jumlah, 0, ',', '.') }}</td>
-                <td>{{ \Carbon\Carbon::parse($item->tanggal_perbaikan)->format('d-m-Y') }}</td>
-                <td>{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') }}</td>
+                <td>{{ $item->tanggal_perbaikan ? \Carbon\Carbon::parse($item->tanggal_perbaikan)->format('d-m-Y') : '-' }}</td>
+                <td>{{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') : '-' }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="11" style="text-align:center;">Tidak ada data perbaikan di bulan ini.</td>
+                <td colspan="14" style="text-align:center;">Tidak ada data perbaikan tersedia.</td>
             </tr>
             @endforelse
         </tbody>
+        @if($perbaikan->count())
+        <tfoot>
+            <tr>
+                <td colspan="14">Total Data: {{ $perbaikan->count() }} perbaikan</td>
+            </tr>
+        </tfoot>
+        @endif
     </table>
 
     <script>
