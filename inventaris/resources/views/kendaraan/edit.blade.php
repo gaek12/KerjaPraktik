@@ -75,7 +75,7 @@
 
         <!-- Tombol -->
         <div class="row mt-4">
-            <div class="col-12 d-flex justify-content-end">
+            <div class="col-12 d-flex justify-content-end mt-3">
                 <a href="{{ route('kendaraan.index') }}#kendaraan" class="btn btn-secondary px-4">Kembali</a>
                 <button type="submit" class="btn btn-success px-4">Update</button>
             </div>

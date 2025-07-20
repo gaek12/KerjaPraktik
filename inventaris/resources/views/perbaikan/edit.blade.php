@@ -66,8 +66,8 @@
 
         {{-- Detail --}}
         <div class="mb-3">
-            <label for="detail_perbaikan" class="form-label">Detail Perbaikan</label>
-            <input type="text" name="detail_perbaikan" id="detail_perbaikan" class="form-control" value="{{ old('detail_perbaikan', $perbaikan->detail_perbaikan) }}" required>
+            <label for="detail_kerusakan" class="form-label">Detail Perbaikan</label>
+            <input type="text" name="detail_kerusakan" id="detail_kerusakan" class="form-control" value="{{ old('detail_kerusakan', $perbaikan->detail_kerusakan) }}" required>
         </div>
 
         {{-- Komponen --}}
