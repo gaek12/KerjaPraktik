@@ -45,6 +45,7 @@
                     <th>Kategori</th>
                     <th>Sub Kategori</th>
                     <th>Detail</th>
+                    <th>Sparepart</th>
                     <th>Jumlah</th>
                     <th>Harga</th>
                     <th>Tgl Perbaikan</th>
@@ -64,6 +65,7 @@
                         <td>{{ $item->kategori }}</td>
                         <td>{{ $item->sub_kategori }}</td>
                         <td>{{ $item->detail_kerusakan }}</td>
+                        <td>{{ $item->komponen }}</td>
                         <td>{{ $item->jumlah }} {{ $item->satuan }}</td>
                         <td>Rp{{ number_format($item->total_harga, 0, ',', '.') }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->tanggal_perbaikan)->format('d-m-Y') }}</td>

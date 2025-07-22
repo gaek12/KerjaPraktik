@@ -72,7 +72,7 @@
 
         {{-- Komponen --}}
         <div class="mb-3">
-            <label for="komponen" class="form-label">Komponen (Opsional)</label>
+            <label for="komponen" class="form-label">Sparepart</label>
             <input type="text" name="komponen" id="komponen" class="form-control" value="{{ old('komponen', $perbaikan->komponen) }}">
         </div>
 
